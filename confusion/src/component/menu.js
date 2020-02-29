@@ -1,41 +1,39 @@
-import React , {Component} from "react";
+import React  from "react";
 import {Card , CardImgOverlay , CardImg} from "reactstrap";
-import DishDetails from "./dishDetails";
-export default class Menu extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            selectDish : null
-        }
+
+    
+    function RenderMenuItem({dishes , onClick}){
+        return(
+            <Card onClick = {()=>{
+                onClick(dishes.id)
+            }}>
+                <CardImg src = {dishes.image} alt = {dishes.name}></CardImg>
+                <CardImgOverlay>
+                    {dishes.name}
+                </CardImgOverlay>
+            </Card>
+        );
     }
-    selDish(dishes){
-        this.setState({
-            selectDish : dishes
-        })
-    }
-    render(){
-        const menu = this.props.dishes.map((dishes)=>{
+
+
+
+    const Menu = (props)=>{
+        const menu = props.dishes.map((dishes)=>{
             return(
-                <div id = {dishes.id} className = "col-12 col-md-5 mt-2" >
-                <Card onClick = {()=>this.selDish(dishes)}>
-                    <CardImg src = {dishes.image} alt = {dishes.name}></CardImg>
-                    <CardImgOverlay>
-                        {dishes.name}
-                    </CardImgOverlay>
-                </Card>
-            </div>
+                <div key = {dishes.id} className = "col-12 col-md-5 mt-2" >
+                    <RenderMenuItem dishes = {dishes} onClick = {props.onClick}/>
+                </div>
             );
         });
         return(
             <div className = "container">
-                 <div className = "row">
+                    <div className = "row">
                     {menu}
                 </div>
-                <div className = "row">
-                    <DishDetails dish = {this.state.selectDish}/>
-                </div>
+                
             </div>
-           
+            
         );
     }
-}
+    
+export default Menu;

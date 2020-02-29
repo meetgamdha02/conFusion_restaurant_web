@@ -1,31 +1,18 @@
 import React , {Component}from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {dishes} from "./shared/shared-menu"
-import Menu from "./component/menu"
-import {Navbar,NavbarBrand } from "reactstrap";
+import Main from "./component/MainComponent"
+import 'font-awesome/css/font-awesome.min.css'
+import 'bootstrap-social/bootstrap-social.css'
+import {BrowserRouter} from 'react-router-dom'
 class App extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      dishes : dishes
-    }
-  }
+  
 
   render(){
     return(
-      <div className = "container">
+      <BrowserRouter>
         <div className = "row">
-          <Navbar  color = "light">
-            <NavbarBrand href = "/">Restro De Confusion</NavbarBrand>
-          </Navbar>
+            <Main/>
         </div>
-        <div className = "row">
-         
-            <Menu dishes = {this.state.dishes}/>
-            
-        </div>
-      </div>
+      </BrowserRouter>
     )
   }
 }
