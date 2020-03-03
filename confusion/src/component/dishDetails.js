@@ -63,7 +63,7 @@ import {CardText , CardBody , Card , CardImg , CardTitle} from "reactstrap"
                        <RenderDish dishes = {dish}></RenderDish>
                     </div>
                     <div className = "col-12 col-md-5 mt-1">
-                        <RenderComments comment = {dish.comments}></RenderComments>
+                        <RenderComments comment = {dish.comment}></RenderComments>
                     </div>
                 </div>
             </div>
