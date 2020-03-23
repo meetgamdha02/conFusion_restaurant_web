@@ -9,7 +9,8 @@ import AboutComponent from './AboutComponent'
 import {Switch , Route , Redirect , withRouter} from 'react-router-dom'
 import  {connect} from 'react-redux';
 import Home from './HomeComponent'
-
+import {addComment , fetchDishes} from '../redux/ActionCreators'
+import Loader from './loader'
 
 const mapStateToProps = (state)=>{
     return{
@@ -19,23 +20,35 @@ const mapStateToProps = (state)=>{
       promotions : state.promotions
     }
 }
+
+const mapDispatcherToProps = (dispatch)=>({
+    addComment : (dishId , rating , author , comment)=>dispatch(addComment(dishId , rating , author , comment)),
+    addDish : ()=>{dispatch(fetchDishes())}
+})
 class Main extends Component{
   constructor(props) {
     super(props);
   }
-  
+  componentDidMount(){
+    this.props.addDish()
+  }
   render(){
     const DishWithId = ({match}) => {
       return(
-          <DishDetails dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
-            comment={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+          <DishDetails dish={this.props.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+            comment={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+            isLoading = {this.props.dishes.isLoading}
+            errmsg = {this.props.dishes.isError}
+            addComment = {this.props.addComment} />
       );
     };
     const HomePage = ()=>{
       return(
-        <Home dishes = {this.props.dishes.filter((dish)=>dish.featured)[0]} 
+        <Home dishes = {this.props.dishes.dishes.filter((dish)=>dish.featured)[0]} 
               promotions = {this.props.promotions.filter((prom)=>prom.featured)[0]}
-              leaders = {this.props.leaders.filter((leaders)=>leaders.featured)[0]}/>
+              leaders = {this.props.leaders.filter((leaders)=>leaders.featured)[0]}
+              isLoading = {this.props.dishes.isLoading}
+              errmsg = {this.props.dishes.isError}/>
       );
     } 
     
@@ -60,4 +73,4 @@ class Main extends Component{
     )
   }
 }
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps ,mapDispatcherToProps)(Main));

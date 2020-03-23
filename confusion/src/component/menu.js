@@ -1,10 +1,10 @@
-import React  from "react";
+import React  from 'react';
 import {Card , CardImgOverlay , CardImg, Breadcrumb, BreadcrumbItem} from "reactstrap";
 import { Link } from "react-router-dom";
-
+import Loader from './loader'
 
     
-    function RenderMenuItem({dishes , onClick}){
+    function RenderMenuItem({dishes }){
         return(
             <Card>
                 <Link to = {`/menu/${dishes.id}`}>
@@ -20,13 +20,32 @@ import { Link } from "react-router-dom";
 
 
     const Menu = (props)=>{
-        const menu = props.dishes.map((dishes)=>{
+        const menu = props.dishes.dishes.map((dishes)=>{
             return(
                 <div key = {dishes.id} className = "col-12 col-md-5 mt-2" >
                     <RenderMenuItem dishes = {dishes}/>
                 </div>
             );
         });
+        if(props.dishes.isLoading){
+            return(
+                <div className = "container">
+                    <div className = "row">
+                        <Loader/>
+                    </div>
+                </div>
+            )
+        }
+        else if(props.dishes.isError){
+            return(
+                <div className = "container">
+                    <div className = "row">
+            <h4>{props.dishes.isError}</h4>
+                    </div>
+                </div>
+            )
+        }
+        else
         return(
             <div className = "container">
                 <div className = "row">
