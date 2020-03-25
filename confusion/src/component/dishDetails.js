@@ -4,6 +4,7 @@ import {Breadcrumb , BreadcrumbItem} from "reactstrap";
 import {Link} from "react-router-dom"
 import {LocalForm , Control , Errors} from 'react-redux-form'
 import  Loader from './loader'
+import {baseUrl} from '../shared/baseUrls'
 
 const required = (val)=>val && val.length;
 const minLength = (len) => (val) => !val || val.length>=len;
@@ -24,7 +25,7 @@ class CommentForm extends Component{
         })
     }
     handleSubmit=(val)=>{
-        this.props.addComment(this.props.dishId , val.rating , val.name , val.comment)
+        this.props.postComment(this.props.dishId , val.rating , val.name , val.comment)
     }
     render(){
         return(
@@ -111,7 +112,7 @@ class CommentForm extends Component{
 }
 
     
-    function RenderComments({comment , addComment , dishId}){
+    function RenderComments({comment , postComment , dishId , isCommentFailed}){
         
         const comt = comment.map((comment)=>{
             return (
@@ -129,22 +130,29 @@ class CommentForm extends Component{
                
             )
         })
-        return(
-            <Card>
-                <CardTitle><b>Comments</b></CardTitle>
-                <CardBody>
-                    {comt}
-                    <CommentForm dishId = {dishId} addComment = {addComment}/>
-                </CardBody>
-                
-            </Card>
-        )
+        if(isCommentFailed){
+            return(
+            <h4>{isCommentFailed}</h4>
+            )
+        }
+        else{
+            return(
+                <Card>
+                    <CardTitle><b>Comments</b></CardTitle>
+                    <CardBody>
+                        {comt}
+                        <CommentForm dishId = {dishId} postComment = {postComment}/>
+                    </CardBody>
+                    
+                </Card>
+            )
+        }
     }
     function RenderDish({dishes }){
          if(dishes!=null){
             return(
                 <Card>
-                    <CardImg src = {dishes.image} alt = {dishes.name}></CardImg>
+                    <CardImg src = {baseUrl + dishes.image} alt = {dishes.name}></CardImg>
                     <CardBody>
                  <CardText>{dishes.name}</CardText>
             <p>{dishes.description}</p>
@@ -206,8 +214,9 @@ class CommentForm extends Component{
                     </div>
                     <div className = "col-12 col-md-5 mt-1">
                         <RenderComments comment = {props.comment}
-                        addComment = {props.addComment}
-                        dishId = {props.dish.id}></RenderComments>
+                        postComment = {props.postComment}
+                        dishId = {props.dish.id}
+                        isCommentFailed = {props.isCommentFailed}></RenderComments>
                     </div>
                 </div>
                 

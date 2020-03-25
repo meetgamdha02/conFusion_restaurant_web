@@ -1,6 +1,6 @@
 import React  , { Component}from 'react';
-import {Breadcrumb , BreadcrumbItem , Form , Button , FormGroup , Label ,Col, Row } from "reactstrap"
-import {Control , LocalForm , Errors} from 'react-redux-form'
+import {Breadcrumb , BreadcrumbItem  , Button , FormGroup , Label ,Col, Row } from "reactstrap"
+import {Control , Form , Errors , actions} from 'react-redux-form'
 import {Link} from "react-router-dom"
 
 const required = (val)=>val && val.length;
@@ -77,7 +77,7 @@ export default class Contact extends Component {
                         <h3>Send us Feedback</h3>
                     </div>
                     <div className = "col-12 col-md-9">
-                    <LocalForm onSubmit={(values) => this.onSubmitClick(values)}>
+                    <Form model = "feedback" onSubmit={(values) => this.onSubmitClick(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
@@ -211,7 +211,7 @@ export default class Contact extends Component {
                                     </Button>
                                 </Col>
                             </Row>
-                        </LocalForm>
+                        </Form>
                     </div>
                 </div>
             </div>
